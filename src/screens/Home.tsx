@@ -1,10 +1,14 @@
+import {NativeStackScreenProps} from '@react-navigation/native-stack';
 import React, {useState} from 'react';
 import {StyleSheet, View} from 'react-native';
 import {Button, Card, TextInput} from 'react-native-paper';
 import {searchMovie} from '../api/apiSearch';
 import MoviesCard from '../components/moviesCard';
 import {SearchResponse} from '../models/responses/searchResponse';
-const HomeScreen = () => {
+import {AppRouterList} from '../models/types/AppRouter';
+const HomeScreen = ({
+  navigation,
+}: NativeStackScreenProps<AppRouterList, 'Home'>) => {
   const [loading, setLoading] = useState(false);
   const [movieResponse, setMovieResponse] = useState<SearchResponse | null>(
     null,
@@ -18,6 +22,10 @@ const HomeScreen = () => {
     });
     setMovieResponse(response);
     setLoading(false);
+  };
+
+  const handleNavigation = () => {
+    navigation.navigate('MovieDetails', movieResponse!);
   };
 
   return (
@@ -43,7 +51,9 @@ const HomeScreen = () => {
           </Button>
         </Card.Content>
       </Card>
-      {movieResponse && <MoviesCard movie={movieResponse} onPress={() => {}} />}
+      {movieResponse && (
+        <MoviesCard movie={movieResponse} onPress={handleNavigation} />
+      )}
     </View>
   );
 };
