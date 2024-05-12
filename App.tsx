@@ -1,12 +1,8 @@
 import React from 'react';
-import {SafeAreaView, Text} from 'react-native';
+import AppRouter from './src/routes/AppRouter';
 
 function App(): React.JSX.Element {
-  return (
-    <SafeAreaView>
-      <Text>Hola mundo</Text>
-    </SafeAreaView>
-  );
+  return <AppRouter />;
 }
 
 export default App;
