@@ -16,7 +16,7 @@ const MoviesCard = ({movie, onPress}: moviesCardProps) => {
         <Text variant="titleLarge">Titulo</Text>
         <Text variant="bodyMedium">{movie.Title}</Text>
         <Text variant="titleLarge">Ratings</Text>
-        <Text variant="bodyMedium">{movie.Title}</Text>
+        <Text variant="bodyMedium">{movie.Ratings[0]?.Value ?? 'N/A'}</Text>
         <Text variant="titleLarge">Descrición</Text>
         <Text variant="bodyMedium">{movie.Plot}</Text>
       </Card.Content>

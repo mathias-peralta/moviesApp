@@ -24,8 +24,8 @@ const HomeScreen = ({
   const getMovie = async () => {
     setLoading(true);
     const response = await searchMovie({
-      title: '007',
-      year: '2022',
+      title: values.title,
+      year: values.year,
     });
     setMovieResponse(response);
     setLoading(false);
@@ -38,48 +38,47 @@ const HomeScreen = ({
     title: Yup.string().required('Este campo no puede ir vacio'),
     year: Yup.string().required('Este campo no puede ir vacio'),
   });
-  const {
-    values,
-    errors,
-    touched,
-    isValid,
-    dirty,
-    setValues,
-    handleChange,
-    handleBlur,
-    handleSubmit,
-  } = useFormik<FormikDatosProps>({
-    initialValues: {
-      title: '',
-      year: '',
-    },
-    validationSchema: validationSchema,
-    onSubmit: handleOnSubmit,
-  });
+  const {values, errors, touched, handleChange, handleBlur, handleSubmit} =
+    useFormik<FormikDatosProps>({
+      initialValues: {
+        title: '',
+        year: '',
+      },
+      validationSchema: validationSchema,
+      onSubmit: getMovie,
+    });
   return (
     <View style={styles.container}>
       <Card style={styles.card}>
         <Card.Content>
-          <TextInput
-            label="Ingresar titulo"
-            style={styles.textInput}
-            mode="outlined"
-            value={values.title}
-            onChangeText={handleChange('title')}
-            onBlur={handleBlur('title')}
-          />
-          {touched.title && errors.title && <Text>{errors.title}</Text>}
-          <TextInput
-            label="Ingresar año"
-            style={styles.textInput}
-            mode="outlined"
-            value={values.year}
-            onChangeText={handleChange('year')}
-            onBlur={handleBlur('year')}
-          />
+          <View style={styles.textInput}>
+            <TextInput
+              label="Ingresar titulo"
+              mode="outlined"
+              value={values.title}
+              onChangeText={handleChange('title')}
+              onBlur={handleBlur('title')}
+            />
+            {touched.title && errors.title && (
+              <Text style={styles.error}>{errors.title}</Text>
+            )}
+          </View>
+          <View style={styles.textInput}>
+            <TextInput
+              label="Ingresar año"
+              mode="outlined"
+              value={values.year}
+              onChangeText={handleChange('year')}
+              onBlur={handleBlur('year')}
+            />
+            {touched.year && errors.year && (
+              <Text style={styles.error}>{errors.year}</Text>
+            )}
+          </View>
+
           <Button
             mode="contained"
-            onPress={getMovie}
+            onPress={() => handleSubmit()}
             disabled={loading}
             loading={loading}>
             Buscar
@@ -87,7 +86,7 @@ const HomeScreen = ({
         </Card.Content>
       </Card>
       {movieResponse && (
-        <MoviesCard movie={movieResponse} onPress={handleSubmit} />
+        <MoviesCard movie={movieResponse} onPress={handleOnSubmit} />
       )}
     </View>
   );
@@ -105,5 +104,11 @@ const styles = StyleSheet.create({
   },
   card: {
     marginBottom: 20,
+  },
+  error: {
+    color: 'red',
+    fontSize: 12,
+    textAlign: 'center',
+    marginTop: 5,
   },
 });
