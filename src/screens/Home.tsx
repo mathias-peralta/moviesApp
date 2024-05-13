@@ -1,7 +1,7 @@
 import {NativeStackScreenProps} from '@react-navigation/native-stack';
 import {useFormik} from 'formik';
 import React, {useState} from 'react';
-import {StyleSheet, View} from 'react-native';
+import {Alert, StyleSheet, View} from 'react-native';
 import {Button, Card, Text, TextInput} from 'react-native-paper';
 import * as Yup from 'yup';
 import {searchMovie} from '../api/apiSearch';
@@ -27,7 +27,11 @@ const HomeScreen = ({
       title: values.title,
       year: values.year,
     });
-    setMovieResponse(response);
+    if (response?.Error!) {
+      Alert.alert('No se encontraron resultados!');
+    } else {
+      setMovieResponse(response);
+    }
     setLoading(false);
   };
 
@@ -85,6 +89,7 @@ const HomeScreen = ({
           </Button>
         </Card.Content>
       </Card>
+
       {movieResponse && (
         <MoviesCard movie={movieResponse} onPress={handleOnSubmit} />
       )}
